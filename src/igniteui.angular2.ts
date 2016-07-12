@@ -1,11 +1,8 @@
-/// <reference path="jquery.d.ts" />
 /// <reference path="igniteui.d.ts" />
 
 import {Component, Directive, Inject, ElementRef, EventEmitter, Output, Input, Query, QueryList, Renderer, OnChanges, NgZone,
 	SimpleChange, ChangeDetectionStrategy, IterableDiffers, DoCheck, Optional} from '@angular/core';
 import {NgModel, ControlValueAccessor} from '@angular/common';
-
-declare var jQuery: any;
 
 var NODES = {
 	"ig-text-editor": "input",
@@ -140,7 +137,8 @@ export class IgControlBase<Model> implements DoCheck {
 				jQuery.ui[this._widgetName].prototype.options.hasOwnProperty(name) &&
 				jQuery(this._el).data(this._widgetName)) {
 				this._config[name] = value;
-				jQuery(this._el)[this._widgetName]("option", name, value);
+				var igControl: any = jQuery(this._el as HTMLElement);
+				igControl[this._widgetName]("option", name, value);
 			}
 		}
 	}
@@ -395,6 +393,15 @@ export class IgGridBase<Model> extends IgControlBase<Model> {
 			}
 		}
 	}
+}
+
+/* Add to interfaces: */
+interface String {
+    contains(str:string): boolean;
+}
+
+interface IgGridMethods {
+	dataSource: typeof Infragistics.DataSource;
 }
 
 @IgComponent()
